@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Please enter some name")
     private String name;
 
     @NotBlank
