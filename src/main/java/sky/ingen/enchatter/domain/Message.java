@@ -20,7 +20,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Please enter some message")
     private String text;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
