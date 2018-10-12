@@ -1,11 +1,15 @@
 package sky.ingen.enchatter.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import sky.ingen.enchatter.domain.User;
 import sky.ingen.enchatter.rep.UserRep;
 import sky.ingen.enchatter.util.exception.NotFoundException;
 
 import java.util.List;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private UserRep userRep;
@@ -16,27 +20,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(User user) {
-        //this is example, your TODO is implement all other methods of this and MessageService
         return userRep.save(user);
     }
 
     @Override
     public void delete(long id) throws NotFoundException {
-
+        userRep.deleteById(id);
     }
 
     @Override
     public User get(long id) throws NotFoundException {
-        return null;
+        return userRep.getOne(id);
     }
 
     @Override
     public void update(User user) {
-
+        userRep.save(user);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return userRep.findAll();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRep.findByUsername(username);
     }
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="jumbotron">
+    <div class="container text-center">
+        <h1>userlist
+            <button type="button" class="btn btn-primary ml-3" data-toggle="modal" data-target="#registerModal">
+                Register new user
+            </button>
+        </h1>
+        <div class="row col-md-7 table-responsive mx-auto">
+            <table id="userTable" class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Roles</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user, rowStat: ${users}"
+                    th:style="${rowStat.odd} ? 'color: gray' : 'color: black;'">
+                    <td th:text="${user.id}">1</td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.password}"></td>
+                    <td th:text="${user.roles}"></td>
+                    <td><a href="/wait_for_it">edit</a></td>
+                    <td><a href="/wait_for_it">delete</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<footer>
+    <div class="modal fade bg-dark" tabindex="-1" role="dialog" id="registerModal"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register new user</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" th:action="@{/}" th:object="${user}" method="post">
+                        <div class="form-group">
+                            <label class="col-form-label">Username</label>
+                            <input class="form-control" type="text" th:field="*{username}"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Password</label>
+                            <input class="form-control" type="text" th:field="*{password}"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <input type="submit" class="btn btn-primary" value="Add user">
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

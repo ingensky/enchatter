@@ -1,11 +1,12 @@
 package sky.ingen.enchatter.service;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import sky.ingen.enchatter.domain.User;
 import sky.ingen.enchatter.util.exception.NotFoundException;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     User create(User user);
 
