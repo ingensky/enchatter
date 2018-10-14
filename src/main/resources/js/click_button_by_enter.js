@@ -1,4 +1,4 @@
-document.getElementById("new_message")
+document.getElementById("message")
     .addEventListener("keyup", function(event) {
         event.preventDefault();
         if (event.keyCode === 13) {
@@ -7,7 +7,7 @@ document.getElementById("new_message")
     });
 
 function clearText(){
-    document.getElementById("new_message").innerText = '';
-    document.getElementById("new_message").innerHTML = '';
+    document.getElementById("message").innerText = '';
+    document.getElementById("message").innerHTML = '';
 }
 //https://stackoverflow.com/questions/155188/trigger-a-button-click-with-javascript-on-the-enter-key-in-a-text-box

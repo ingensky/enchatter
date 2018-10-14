@@ -39,7 +39,7 @@
                         <span class="navbar-text mr-3" th:text ="${#authentication.getPrincipal().getUsername()}"></span>
                     </li>
                 </div>
-                <div sec:authorize="!isAuthenticated()">
+                <div sec:authorize="isAnonymous()">
                     <li class="nav-item"><a class="btn btn-primary mr-2" th:href="@{/login}">Log in</a></li>
                 </div>
                 <li class="nav-item">

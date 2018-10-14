@@ -1,7 +1,7 @@
 package sky.ingen.enchatter.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,14 +25,13 @@ public class ChatterWebController {
     @GetMapping
     public String getChatPage(Model model) {
         model.addAttribute("messages", msgService.getAll());
-        model.addAttribute("newMessage", new Message());
+        model.addAttribute("message", new Message());
         return "chatter";
     }
 
     @PostMapping
-    public String sendNewMessage(@ModelAttribute("newMessage") Message message) {
+    public String sendMessage(@ModelAttribute("message") Message message, @AuthenticationPrincipal User author) {
         if (StringUtils.hasText(message.getText())) {
-            User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             message.setAuthor(author);
             message.setCreationTime(LocalDateTime.now());
             msgService.create(message);
