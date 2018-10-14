@@ -12,7 +12,7 @@
     <div style="padding: 10px; width: 50%; min-width: 400px; margin-left: auto; background: #AFEEEE; margin-right: auto; ">
         <form th:action="@{/chatter}" th:object="${message}" method="post">
             <div class="input-group">
-                <input type="text" autocomplete="off" id="message" class="form-control" placeholder="Your message" style="width: 90%; background: white; font-size: 20px; border-radius: 5px;" th:field="*{text}" required autofocus>
+                <input type="text" autocomplete="off" id="message" class="form-control" placeholder="Your message" style="background: white; font-size: 20px; border-radius: 5px;" th:field="*{text}" required autofocus>
                 <!--<div id="message" contenteditable="true" role="textbox" aria-multiline="true" style="width: 80%; background: white; font-size: 20px; border-radius: 5px;" autofocus th:field="*{text}"></div>-->
                 <div class="input-group-append">
                     <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
