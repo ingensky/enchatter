@@ -27,23 +27,10 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div th:replace="fragments/chat_view :: chat_view"></div>
-
 <div style="position: fixed; bottom: 0; left: 0; width: 100%;">
     <div style="padding: 10px; width: 50%; min-width: 400px; margin-left: auto; background: #AFEEEE; margin-right: auto; ">
-        <form th:action="@{/chatter}" th:object="${newMessage}" method="post">
-            <div class="input-group">
-                <input type="text" autocomplete="off" id="new_message" class="form-control" placeholder="Your message" style="width: 90%; background: white; font-size: 20px; border-radius: 5px;" th:field="*{text}" required autofocus>
-                <!-- Nice option for which the script does not work yet <div id="new_message" contenteditable="true" placeholder="Your message" role="textbox" aria-multiline="true" style="width: 90%; background: white; font-size: 20px; border-radius: 5px;" th:field="*{text}" required autofocus></div>-->
-                <div class="input-group-append">
-                    <button onclick="clearText()" id="send_button" type="submit" class="btn btn-secondary">Send</button>
-                </div>
-            </div>
-        </form>
         <div th:replace="fragments/footer :: footer"></div>
     </div>
 </div>
-
-<script type="text/javascript" src="scripts/click_button_by_enter.js"></script>
-
 </body>
 </html>

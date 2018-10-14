@@ -16,27 +16,16 @@ import sky.ingen.enchatter.service.MessageService;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/chatter")
-public class ChatterWebController {
+@RequestMapping("/my_chatter")
+public class MyChatterWebController {
 
     @Autowired
     private MessageService msgService;
 
     @GetMapping
-    public String getChatPage(Model model) {
-        model.addAttribute("messages", msgService.getAll());
+    public String getMyChatPage(Model model) {
+        model.addAttribute("messages", msgService.getAllFromUser(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()));
         model.addAttribute("newMessage", new Message());
-        return "chatter";
-    }
-
-    @PostMapping
-    public String sendNewMessage(@ModelAttribute("newMessage") Message message) {
-        if (StringUtils.hasText(message.getText())) {
-            User author = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            message.setAuthor(author);
-            message.setCreationTime(LocalDateTime.now());
-            msgService.create(message);
-        }
-        return "redirect:/chatter";
+        return "my_chatter";
     }
 }

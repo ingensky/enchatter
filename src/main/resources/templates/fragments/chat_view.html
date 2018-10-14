@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        html, body{
+            height: 100%;
+        }
+        .message{
+            width: fit-content;
+            text-align: left;
+            background: #FFFFFF;
+            box-shadow: rgba(0,0,0,1.2) 0px 1px 3px;
+            margin: 2px;
+            border-radius: 5px;
+        }
+        .message_text{
+            margin:3px 3px 3px 3px;
+        }
+        .text_block{
+            text-align: center;
+            width: fit-content;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:fragment="chat_view" style= "height: 100%; margin-left: auto; margin-right: auto; position: relative; width:50%; min-width: 400px;">
+    <div style="min-height: 100%; float: left; position: relative; background: #E0FFFF; width: 100%; padding-top: 50px; padding-bottom: 160px;">
+        <div style="bottom:0; padding: 10px;">
+            <div th:each="message, rowStat: ${messages}"  style="position: relative;">
+                <div style="display: inline-block; max-width: 95%; position: relative;">
+                    <div class="text_block" style="position: relative;">
+                        <font size="5" color="#4169E1" th:text="${message.author.username}"></font>
+                        <font size="2" color="#7B68EE" th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm')}"></font>  <!-- https://www.baeldung.com/dates-in-thymeleaf -->
+                    </div>
+                    <div class="message" style="position: relative; max-width:90%;">
+                        <div class="message_text">
+                            <font size="5" th:text="${message.text}" style="overflow-wrap: break-word;"></font>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar" style="width:29%; float: right; position: fixed; top: 60px; right: 8%">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/my_chatter">All my messages <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+
+</body>
+</html>
