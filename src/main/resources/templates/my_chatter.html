@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="/static/chat_view.css" rel="stylesheet">
+    <div th:replace="fragments/header :: header-css"></div>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/chat_view :: chat_view"></div>
+<div style="position: fixed; bottom: 0; left: 0; width: 100%;">
+    <div style="padding: 10px; width: 50%; min-width: 400px; margin-left: auto; background: #AFEEEE; margin-right: auto; ">
+        <div th:replace="fragments/footer :: footer"></div>
+    </div>
+</div>
+</body>
+</html>

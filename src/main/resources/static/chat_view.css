@@ -1,0 +1,19 @@
+html, body{
+    height: 100%;
+}
+.message{
+    width: fit-content;
+    text-align: left;
+    background: #FFFFFF;
+    box-shadow: rgba(0,0,0,1.2) 0px 1px 3px;
+    margin: 2px;
+    border-radius: 5px;
+}
+.message_text{
+    margin:3px 3px 3px 3px;
+}
+.text_block{
+    text-align: center;
+    width: fit-content;
+    margin: 2px;
+}

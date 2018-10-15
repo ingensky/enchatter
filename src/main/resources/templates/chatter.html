@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="/static/chat_view.css" rel="stylesheet">
+    <div th:replace="fragments/header :: header-css"></div>
 </head>
 <body>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/chat_view :: chat_view"></div>
+
+<div style="position: fixed; bottom: 0; left: 0; width: 100%;">
+    <div style="padding: 10px; width: 50%; min-width: 400px; margin-left: auto; background: #AFEEEE; margin-right: auto; ">
+        <form th:action="@{/chatter}" th:object="${message}" method="post">
+            <div class="input-group">
+                <input type="text" autocomplete="off" id="message" class="form-control" placeholder="Your message" style="background: white; font-size: 20px; border-radius: 5px;" th:field="*{text}" required autofocus>
+                <!--<div id="message" contenteditable="true" role="textbox" aria-multiline="true" style="width: 80%; background: white; font-size: 20px; border-radius: 5px;" autofocus th:field="*{text}"></div>-->
+                <div class="input-group-append">
+                    <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
+                </div>
+            </div>
+        </form>
+        <div th:replace="fragments/footer :: footer"></div>
+    </div>
+</div>
 
 </body>
 </html>
