@@ -30,4 +30,8 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User author;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dialog_id")
+    private Dialog dialog;
+
 }
