@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,6 +22,7 @@ public class Message {
     private Long id;
 
     @NotBlank(message = "Please enter some message")
+    @Size(min = 2, max = 10000)
     private String text;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
