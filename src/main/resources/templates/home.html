@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <div th:replace="fragments/header :: header-css"></div>
 </head>
@@ -32,8 +32,11 @@
                     <td th:text="${user.username}"></td>
                     <td th:text="${user.password}"></td>
                     <td th:text="${user.roles}"></td>
-                    <td><a href="/wait_for_it">edit</a></td>
-                    <td><a href="/wait_for_it">delete</a></td>
+                    <td>
+                        <div sec:authorize="isAuthenticated()">
+                            <a href="#" class="fa fa-user-plus"></a>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
