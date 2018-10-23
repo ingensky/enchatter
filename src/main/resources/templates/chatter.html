@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>Login page</title>
+    <!--<link href="/static/signin.css" rel="stylesheet">-->
+    <link href="/static/chatter.css" rel="stylesheet">
 
+    <div th:replace="fragments/header :: header-css"></div>
+</head>
+<body class="text-center">
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container-fluid h-100">
+
+    <div class="row h-100">
+        <div class="col-sm-4 h-100">
+            <div class="jumbotron h-100">
+                <h2 th:text="${dialogs.size()}">11</h2>
+                <div class="card-group" th:each="dialog, rowStat: ${dialogs}">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="list-inline">
+                                <li class="list-inline-item"><div class="alert alert-secondary" th:text="${dialog.id}"></div></li>
+                                <li class="list-inline-item" th:text="${dialog.getInterlocutorOne().username} + ' <-> '+ ${dialog.getInterlocutorTwo().username}"></li>
+                                <li class="list-inline-item"><a href="#" class="btn btn-primary">Button</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8 h-100">
+            <div class="jumbotron h-100">
+                <h2 th:text="${messages.size()}">some text</h2>
+                <div class="card-group" th:each="message, rowStat: ${messages}">
+                    <div class="card my-1">
+                        <div class="card-header">
+                            <a th:text="${message.getAuthor().getUsername()}"></a>
+                        </div>
+                        <div class="card-body">
+                            <a th:text="${message.getText()}"></a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            <a th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm')}"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="fixed-bottom">
+                    <form th:action="@{/chatter(p=${interlocutor})}" th:object="${message}" method="post">
+                        <div class="input-group">
+                            <input type="text" autocomplete="off" id="message" class="form-control"
+                                   placeholder="Your message"
+                                   th:field="*{text}"
+                                   required autofocus>
+                            <div class="input-group-append">
+                                <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
