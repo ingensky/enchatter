@@ -2,6 +2,7 @@ package sky.ingen.enchatter.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sky.ingen.enchatter.domain.Dialog;
 import sky.ingen.enchatter.domain.Message;
 import sky.ingen.enchatter.rep.MessageRep;
 import sky.ingen.enchatter.util.exception.NotFoundException;
@@ -42,5 +43,10 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> getAllFromUser(long userId) {
         return messageRep.findByAuthorIdOrderByCreationTimeAsc(userId);
+    }
+
+    @Override
+    public List<Message> allDialogMessages(Dialog dialog) {
+        return messageRep.findByDialogOrderByCreationTime(dialog);
     }
 }
