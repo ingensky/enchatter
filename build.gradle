@@ -32,9 +32,11 @@ dependencies {
 	implementation('org.postgresql:postgresql')
 	implementation('org.springframework.session:spring-session-jdbc')
 	implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity4')
+	implementation('org.apache.commons:commons-lang3')
+
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
-	implementation('com.h2database:h2')
 	compileOnly('org.projectlombok:lombok')
+	testImplementation('com.h2database:h2')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.security:spring-security-test')
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
