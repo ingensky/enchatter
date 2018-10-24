@@ -1,5 +1,6 @@
 package sky.ingen.enchatter.service;
 
+import sky.ingen.enchatter.domain.Dialog;
 import sky.ingen.enchatter.domain.Message;
 import sky.ingen.enchatter.util.exception.NotFoundException;
 
@@ -18,4 +19,6 @@ public interface MessageService {
     List<Message> getAll();
 
     List<Message> getAllFromUser(long userId);
+
+    List<Message> allDialogMessages(Dialog dialog);
 }

@@ -1,5 +1,6 @@
 package sky.ingen.enchatter.web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/chatter")
+@Slf4j
 public class ChatterWebController {
 
-    private final MessageService msgService;
+    private final MessageService messageService;
 
     private final UserService userService;
 
@@ -30,7 +32,7 @@ public class ChatterWebController {
 
     @Autowired
     public ChatterWebController(MessageService msgService, UserService userService, DialogRep dialogRep) {
-        this.msgService = msgService;
+        this.messageService = msgService;
         this.userService = userService;
         this.dialogRep = dialogRep;
     }
@@ -45,13 +47,14 @@ public class ChatterWebController {
         List<Dialog> allForPrincipal = dialogRep.getAllForPrincipal(authUser);
         if (username != null) {
             Dialog  conversation = getDialog(username, allForPrincipal);
-            model.addAttribute("messages", conversation.getMessages());
+            model.addAttribute("messages", messageService.allDialogMessages(conversation));
             model.addAttribute("interlocutor", username);
         } else {
             model.addAttribute("messages", Collections.EMPTY_LIST);
         }
         model.addAttribute("dialogs", allForPrincipal);
         model.addAttribute("message", new Message());
+        log.debug("get dialog page {} <-> {}", authUser.getUsername(), username);
         return "chatter";
 
 
@@ -71,10 +74,13 @@ public class ChatterWebController {
             @ModelAttribute("message") Message message,
             @AuthenticationPrincipal User author) {
         if (StringUtils.hasText(message.getText())) {
+            log.debug("insert message {}", message.getText());
             message.setDialog(dialogRep.findDialog(author, userService.getByUsername(username)));
             message.setAuthor(author);
             message.setCreationTime(LocalDateTime.now());
-            msgService.create(message);
+            messageService.create(message);
+            log.debug("message got id = {}", message.getId());
+
         }
         return "redirect:/chatter?p="+username;
     }
