@@ -10,3 +10,19 @@ body, html{
 .jumbotron{
     overflow-y: scroll;
 }
+
+.h-90{
+    height: 90%;
+}
+
+.h-10{
+    height: 10%;
+}
+
+.font-size-20{
+    font-size: 20px;
+}
+
+.font-size-12{
+    font-size: 12px;
+}
