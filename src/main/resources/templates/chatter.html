@@ -3,7 +3,6 @@
       xmlns:width="http://www.w3.org/1999/xhtml">
 <head>
     <title>Enchatter</title>
-    <!--<link href="/static/signin.css" rel="stylesheet">-->
     <link href="/static/chatter.css" rel="stylesheet">
 
     <div th:replace="fragments/header :: header-css"></div>
@@ -14,51 +13,29 @@
 <div class="container-fluid h-90 w-75">
 
     <div class="row h-100">
-        <div class="col-sm-2 h-100">
+        <div class="col-sm-3 h-100">
             <!--<h2 th:text="${dialogs.size()}">11</h2>-->
             <nav class="navbar navbar-light align-items-stretch bg-light flex-column m-0 p-0">
                 <a class="navbar-brand bd-highlight">Dialogs</a>
                 <nav class="jumbotron nav nav-pills flex-column mh-100 m-0 p-0">
                     <nav class="nav nav-pills flex-column" th:each="dialog, rowStat: ${dialogs}">
-                        <!--<div th:if="${#authentication.getPrincipal().getRoles().conteins('ADMIN')}">
-                            <a class="nav-link" th:text="${dialog.getInterlocutorTwo().getUsername()} + 'and' + ${dialog.getInterlocutorTwo().getUsername()}"></a>
-                        </div>
-                        <div th:unless="${#authentication.getPrincipal().getRoles().conteins('ADMIN')}">-->
-                        <div th:if="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal()) || dialog.getInterlocutorTwo().equals(#authentication.getPrincipal())}">
-                            <div th:if="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
-                                <a class="nav-link" th:utext="${dialog.getInterlocutorTwo().getUsername()}"
+                            <div th:switch="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
+                                <a th:case="true" class="nav-link breadcrumb-item active mx-2 my-1" th:utext="${dialog.getInterlocutorTwo().getUsername()}"
                                    th:href="@{/chatter(p=${dialog.getInterlocutorTwo().getUsername()})}"></a>
-                            </div>
-                            <div th:unless="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
-                                <a class="nav-link" th:utext="${dialog.getInterlocutorOne().getUsername()}"
+                                <a th:case="false" class="nav-link breadcrumb-item active mx-2 my-1" th:utext="${dialog.getInterlocutorOne().getUsername()}"
                                    th:href="@{/chatter(p=${dialog.getInterlocutorOne().getUsername()})}"></a>
                             </div>
-                        </div>
-                        <!--</div>-->
                     </nav>
                 </nav>
             </nav>
         </div>
         <div class="col-sm-8 h-100">
             <div class="jumbotron h-90">
-                <!--<h2 th:text="${messages.size()}">some text</h2>-->
                 <div th:each="message, rowStat: ${messages}">
-                    <div class="card-group d-flex align-items-end flex-column"
-                         th:if="${message.getAuthor().equals(#authentication.getPrincipal())}">
-                        <div class="card my-1 d-inline-flex">
-                            <div class="card-header d-inline-flex align-items-baseline">
-                                <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
-                                <a class="text-secondary ml-3 font-size-12"
-                                   th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
-                            </div>
-                            <div class="card-body d-inline-flex">
-                                <a th:text="${message.getText()}"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-group d-flex align-items-start flex-column"
-                         th:unless="${message.getAuthor().equals(#authentication.getPrincipal())}">
-                        <div class="card my-1 d-inline-flex">
+                    <div class="card-group d-flex flex-column"
+                         th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?
+                         'align-items-start':'align-items-end'">
+                        <div class="card my-1 d-inline-flex border-secondary" >
                             <div class="card-header d-inline-flex align-items-baseline">
                                 <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
                                 <a class="text-secondary ml-3 font-size-12"
@@ -79,7 +56,7 @@
                                th:field="*{text}"
                                required autofocus>
                         <div class="input-group-append">
-                            <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
+                            <button id="send_button" type="submit" class="btn btn-primary">Send</button>
                         </div>
                     </div>
                 </form>

@@ -47,6 +47,6 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> allDialogMessages(Dialog dialog) {
-        return messageRep.findByDialogOrderByCreationTime(dialog);
+        return messageRep.findByDialogOrderByCreationTimeDesc(dialog);
     }
 }

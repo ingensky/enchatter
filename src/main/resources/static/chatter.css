@@ -1,6 +1,8 @@
 body, html{
     height: 100%;
     padding-top: 35px;
+    /*https://stackoverflow.com/a/10769515/7667017*/
+    background-color: #ced4da !important;
 }
 
 .fixed-bottom{
