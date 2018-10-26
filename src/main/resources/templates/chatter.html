@@ -11,62 +11,82 @@
 <body class="text-center">
 <div th:replace="fragments/header :: header"></div>
 
-<div class="container-fluid h-100">
+<div class="container-fluid h-90 w-75">
 
     <div class="row h-100">
-        <div class="col-sm-4 h-100">
-            <div class="jumbotron h-100">
-                <h2 th:text="${dialogs.size()}">11</h2>
-                <div class="card-group" th:each="dialog, rowStat: ${dialogs}">
-                    <div class="card">
-                        <div class="card-body">
-                            <ul class="list-inline">
-                                <li class="list-inline-item"><div class="alert alert-secondary" th:text="${dialog.id}"></div></li>
-                                <li class="list-inline-item" th:text="${dialog.getInterlocutorOne().username} + ' <-> '+ ${dialog.getInterlocutorTwo().username}"></li>
-                                <li class="list-inline-item"><a href="#" class="btn btn-primary">Button</a></li>
-                            </ul>
+        <div class="col-sm-2 h-100">
+            <!--<h2 th:text="${dialogs.size()}">11</h2>-->
+            <nav class="navbar navbar-light align-items-stretch bg-light flex-column m-0 p-0">
+                <a class="navbar-brand bd-highlight">Dialogs</a>
+                <nav class="jumbotron nav nav-pills flex-column mh-100 m-0 p-0">
+                    <nav class="nav nav-pills flex-column" th:each="dialog, rowStat: ${dialogs}">
+                        <!--<div th:if="${#authentication.getPrincipal().getRoles().conteins('ADMIN')}">
+                            <a class="nav-link" th:text="${dialog.getInterlocutorTwo().getUsername()} + 'and' + ${dialog.getInterlocutorTwo().getUsername()}"></a>
+                        </div>
+                        <div th:unless="${#authentication.getPrincipal().getRoles().conteins('ADMIN')}">-->
+                        <div th:if="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal()) || dialog.getInterlocutorTwo().equals(#authentication.getPrincipal())}">
+                            <div th:if="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
+                                <a class="nav-link" th:utext="${dialog.getInterlocutorTwo().getUsername()}"
+                                   th:href="@{/chatter(p=${dialog.getInterlocutorTwo().getUsername()})}"></a>
+                            </div>
+                            <div th:unless="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
+                                <a class="nav-link" th:utext="${dialog.getInterlocutorOne().getUsername()}"
+                                   th:href="@{/chatter(p=${dialog.getInterlocutorOne().getUsername()})}"></a>
+                            </div>
+                        </div>
+                        <!--</div>-->
+                    </nav>
+                </nav>
+            </nav>
+        </div>
+        <div class="col-sm-8 h-100">
+            <div class="jumbotron h-90">
+                <!--<h2 th:text="${messages.size()}">some text</h2>-->
+                <div th:each="message, rowStat: ${messages}">
+                    <div class="card-group d-flex align-items-end flex-column"
+                         th:if="${message.getAuthor().equals(#authentication.getPrincipal())}">
+                        <div class="card my-1 d-inline-flex">
+                            <div class="card-header d-inline-flex align-items-baseline">
+                                <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
+                                <a class="text-secondary ml-3 font-size-12"
+                                   th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
+                            </div>
+                            <div class="card-body d-inline-flex">
+                                <a th:text="${message.getText()}"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-group d-flex align-items-start flex-column"
+                         th:unless="${message.getAuthor().equals(#authentication.getPrincipal())}">
+                        <div class="card my-1 d-inline-flex">
+                            <div class="card-header d-inline-flex align-items-baseline">
+                                <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
+                                <a class="text-secondary ml-3 font-size-12"
+                                   th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
+                            </div>
+                            <div class="card-body d-inline-flex">
+                                <a th:text="${message.getText()}"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-8 h-100">
-            <div class="jumbotron h-100">
-                <h2 th:text="${messages.size()}">some text</h2>
-                <div class="card-group" th:each="message, rowStat: ${messages}">
-                    <div class="card my-1">
-                        <div class="card-header">
-                            <a th:text="${message.getAuthor().getUsername()}"></a>
-                        </div>
-                        <div class="card-body">
-                            <a th:text="${message.getText()}"></a>
-                        </div>
-                        <div class="card-footer text-muted">
-                            <a th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
+            <div class="h-10">
+                <form th:action="@{/chatter(p=${interlocutor})}" th:object="${message}" method="post">
+                    <div class="input-group">
+                        <input type="text" autocomplete="off" id="message" class="form-control"
+                               placeholder="Your message"
+                               th:field="*{text}"
+                               required autofocus>
+                        <div class="input-group-append">
+                            <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
                         </div>
                     </div>
-                </div>
-                <div class="fixed-bottom">
-                    <form th:action="@{/chatter(p=${interlocutor})}" th:object="${message}" method="post">
-                        <div class="input-group">
-                            <input type="text" autocomplete="off" id="message" class="form-control"
-                                   placeholder="Your message"
-                                   th:field="*{text}"
-                                   required autofocus>
-                            <div class="input-group-append">
-                                <button id="send_button" type="submit" class="btn btn-secondary">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-
-
 </div>
-
-
 <div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>
