@@ -46,7 +46,17 @@ public class ChatterWebController {
     ) {
         List<Dialog> allForPrincipal = dialogRep.getAllForPrincipal(authUser);
         if (username != null) {
-            Dialog  conversation = getDialog(username, allForPrincipal);
+            User interlocutor = userService.getByUsername(username);
+            Dialog conversation;
+            try {
+                conversation = getDialog(interlocutor, allForPrincipal);
+            }catch(NotFoundException e){
+                conversation = new Dialog();
+                conversation.setInterlocutorOne(authUser);
+                conversation.setInterlocutorTwo(interlocutor);
+                conversation.setLastUpdate(LocalDateTime.now());
+                dialogRep.save(conversation);
+            }
             model.addAttribute("messages", messageService.allDialogMessages(conversation));
             model.addAttribute("interlocutor", username);
         } else {
@@ -60,8 +70,7 @@ public class ChatterWebController {
 
     }
 
-    private Dialog getDialog(@RequestParam("p") String username, List<Dialog> allForPrincipal) {
-        User interlocutor = userService.getByUsername(username);
+    private Dialog getDialog(User interlocutor, List<Dialog> allForPrincipal) {
         return allForPrincipal.stream().filter(dialog ->
                 (dialog.getInterlocutorOne().getId().equals(interlocutor.getId())) ||
                         (dialog.getInterlocutorTwo().getId().equals(interlocutor.getId()))

@@ -34,7 +34,7 @@
                     <td th:text="${user.roles}"></td>
                     <td>
                         <div sec:authorize="isAuthenticated()">
-                            <a href="#" class="fa fa-user-plus"></a>
+                            <a th:href="@{/chatter(p=${user.username})}" class="fa fa-user-plus"></a>
                         </div>
                     </td>
                 </tr>

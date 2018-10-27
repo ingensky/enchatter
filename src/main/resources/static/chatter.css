@@ -28,3 +28,7 @@ body, html{
 .font-size-12{
     font-size: 12px;
 }
+
+.card-body{
+    word-break: break-all;
+}
