@@ -19,31 +19,34 @@
                 <a class="navbar-brand bd-highlight">Dialogs</a>
                 <nav class="jumbotron nav nav-pills flex-column mh-100 m-0 p-0">
                     <nav class="nav nav-pills flex-column" th:each="dialog, rowStat: ${dialogs}">
-                            <div th:switch="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
-                                <a th:case="true" class="nav-link breadcrumb-item active mx-2 my-1" th:utext="${dialog.getInterlocutorTwo().getUsername()}"
-                                   th:href="@{/chatter(p=${dialog.getInterlocutorTwo().getUsername()})}"></a>
-                                <a th:case="false" class="nav-link breadcrumb-item active mx-2 my-1" th:utext="${dialog.getInterlocutorOne().getUsername()}"
-                                   th:href="@{/chatter(p=${dialog.getInterlocutorOne().getUsername()})}"></a>
-                            </div>
+                        <div th:switch="${dialog.getInterlocutorOne().equals(#authentication.getPrincipal())}">
+                            <a th:case="true" class="nav-link breadcrumb-item active mx-2 my-1"
+                               th:utext="${dialog.getInterlocutorTwo().getUsername()}"
+                               th:href="@{/chatter(p=${dialog.getInterlocutorTwo().getUsername()})}"></a>
+                            <a th:case="false" class="nav-link breadcrumb-item active mx-2 my-1"
+                               th:utext="${dialog.getInterlocutorOne().getUsername()}"
+                               th:href="@{/chatter(p=${dialog.getInterlocutorOne().getUsername()})}"></a>
+                        </div>
                     </nav>
                 </nav>
             </nav>
         </div>
         <div class="col-sm-8 h-100">
+            <div th:if="${messages.size()==0}">
+                <a class="text-secondary font-size-20">You have not written a message yet.</a>
+            </div>
             <div class="jumbotron h-90">
                 <div th:each="message, rowStat: ${messages}">
                     <div class="card-group d-flex flex-column"
                          th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?
                          'align-items-end':'align-items-start'">
-                        <div class="card my-1 d-inline-flex mw-100"
-                             th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?
-                             'border-primary':'border-secondary'">
-                            <div class="card-header d-inline-flex align-items-baseline m-1 p-0">
+                        <div class="card my-1 d-inline-flex mw-100 border-secondary shadow">
+                            <div class="card-header d-inline-flex align-items-baseline p-1">
                                 <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
                                 <a class="text-secondary ml-3 font-size-12"
                                    th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
                             </div>
-                            <div class="card-body d-inline-flex mw-100">
+                            <div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">
                                 <a th:text="${message.getText()}"></a>
                             </div>
                         </div>
