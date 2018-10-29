@@ -12,5 +12,5 @@ public interface MessageRep extends JpaRepository<Message, Long> {
 
     List<Message> findByAuthorIdOrderByCreationTimeAsc(long id);
 
-    List<Message> findByDialogOrderByCreationTimeDesc(Dialog dialog);
+    List<Message> findByDialogOrderByCreationTime(Dialog dialog);
 }

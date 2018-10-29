@@ -35,33 +35,48 @@
             <div th:if="${messages.size()==0}">
                 <a class="text-secondary font-size-20">You have not written a message yet.</a>
             </div>
-            <div class="jumbotron h-90">
-                <div th:each="message, rowStat: ${messages}">
-                    <div class="card-group d-flex flex-column"
-                         th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?
-                         'align-items-end':'align-items-start'">
-                        <div class="card my-1 d-inline-flex mw-100 border-secondary shadow">
-                            <div class="card-header d-inline-flex align-items-baseline p-1">
-                                <a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>
-                                <a class="text-secondary ml-3 font-size-12"
-                                   th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
-                            </div>
-                            <div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">
-                                <a th:text="${message.getText()}"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="jumbotron h-90" id="messagesBlock">
+
+                <!--TODO uncomment card block and delete table block (dont forget to add id)-->
+                <!--<div th:each="message, rowStat: ${messages}">-->
+                    <!--<div class="card-group d-flex flex-column"-->
+                         <!--th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?-->
+                         <!--'align-items-end':'align-items-start'">-->
+                        <!--<div class="card my-1 d-inline-flex mw-100 border-secondary shadow">-->
+                            <!--<div class="card-header d-inline-flex align-items-baseline p-1">-->
+                                <!--<a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>-->
+                                <!--<a class="text-secondary ml-3 font-size-12"-->
+                                   <!--th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>-->
+                            <!--</div>-->
+                            <!--<div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">-->
+                                <!--<a th:text="${message.getText()}"></a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <table id="conversation" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Greetings to all</th>
+                    </tr>
+                    </thead>
+                    <tbody id="temporaryIdForMessages">
+                    <tr th:each="message, rowStat: ${messages}">
+                        <td th:text="${message.id}"> </td>
+                        <td th:text="${message.author.username}"> </td>
+                        <td th:text="${message.text}"> </td>
+                        <td th:text="${message.creationTime}"> </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="h-10">
-                <form th:action="@{/chatter(p=${interlocutor})}" th:object="${message}" method="post">
+                <form id="formInputMessageText">
                     <div class="input-group">
-                        <input type="text" autocomplete="off" id="message" class="form-control"
-                               placeholder="Your message"
-                               th:field="*{text}"
-                               required autofocus>
+                        <input type="text" autocomplete="off"
+                               id="inputMessageText" class="form-control" autofocus/>
                         <div class="input-group-append">
-                            <button id="send_button" type="submit" class="btn btn-primary">Send</button>
+                            <button onclick="sendMessage(dialogId)" class="btn btn-primary">Send</button>
                         </div>
                     </div>
                 </form>
@@ -70,5 +85,11 @@
     </div>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
+<script th:inline="javascript">
+    let dialogId = [[${dialogId}]];
+    if (dialogId !== null) {
+        connect()
+    }
+</script>
 </body>
 </html>

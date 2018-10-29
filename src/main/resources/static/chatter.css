@@ -10,7 +10,7 @@ body, html{
 }
 
 .jumbotron{
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .h-90{
