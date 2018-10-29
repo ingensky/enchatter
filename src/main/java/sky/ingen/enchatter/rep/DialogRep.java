@@ -15,4 +15,6 @@ public interface DialogRep extends JpaRepository<Dialog, Long> {
     @Query("SELECT d from Dialog d where (d.interlocutorOne = ?1 AND d.interlocutorTwo = ?2) OR " +
             "(d.interlocutorOne = ?2 AND d.interlocutorTwo = ?1)")
     Dialog findDialog(User one, User two);
+
+    Dialog getById(Long id);
 }

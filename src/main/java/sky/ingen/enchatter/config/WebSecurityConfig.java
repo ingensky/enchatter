@@ -20,7 +20,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/home", "/static/**", "/js/**").permitAll()
+//        https://levlaz.org/spring-security-webjars-and-mime-type-error/
+                    .antMatchers("/", "/home", "/static/**", "/js/**", "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()
