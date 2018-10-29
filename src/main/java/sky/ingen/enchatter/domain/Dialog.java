@@ -1,10 +1,7 @@
 package sky.ingen.enchatter.domain;
 
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +12,8 @@ import java.util.Set;
 @ToString(exclude = {"messages"})
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"interlocutor_one_id", "interlocutor_two_id"}, name = "dialog_unique_interlocutors_idx")})
 public class Dialog extends AbstractConversation {

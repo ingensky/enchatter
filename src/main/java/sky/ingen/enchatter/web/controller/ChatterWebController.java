@@ -18,6 +18,7 @@ import sky.ingen.enchatter.util.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/chatter")
@@ -46,16 +47,12 @@ public class ChatterWebController {
     ) {
         List<Dialog> allForPrincipal = dialogRep.getAllForPrincipal(authUser);
         if (username != null) {
-            User interlocutor = userService.getByUsername(username);
-            Dialog conversation;
-            try {
-                conversation = getDialog(interlocutor, allForPrincipal);
-            }catch(NotFoundException e){
-                conversation = new Dialog();
-                conversation.setInterlocutorOne(authUser);
-                conversation.setInterlocutorTwo(interlocutor);
-                conversation.setLastUpdate(LocalDateTime.now());
-                dialogRep.save(conversation);
+            User interlocutor = Optional.ofNullable(userService.getByUsername(username))
+                    .orElseThrow(() ->
+                            new NotFoundException(String.format("User %s not found", username)));
+            Dialog conversation = getDialog(authUser, interlocutor, allForPrincipal);
+            if (!allForPrincipal.contains(conversation)) {
+                allForPrincipal.add(conversation);
             }
             model.addAttribute("messages", messageService.allDialogMessages(conversation));
             model.addAttribute("interlocutor", username);
@@ -70,11 +67,21 @@ public class ChatterWebController {
 
     }
 
-    private Dialog getDialog(User interlocutor, List<Dialog> allForPrincipal) {
+    private Dialog getDialog(User authUser, User interlocutor, List<Dialog> allForPrincipal) {
         return allForPrincipal.stream().filter(dialog ->
                 (dialog.getInterlocutorOne().getId().equals(interlocutor.getId())) ||
                         (dialog.getInterlocutorTwo().getId().equals(interlocutor.getId()))
-        ).findFirst().orElseThrow(NotFoundException::new);
+        ).findFirst()
+                .orElseGet(() -> createNewDialog(authUser, interlocutor));
+    }
+
+    private Dialog createNewDialog(User one, User two) {
+        Dialog dialog = Dialog.builder()
+                .interlocutorOne(one)
+                .interlocutorTwo(two)
+                .lastUpdate(LocalDateTime.now())
+                .build();
+        return dialogRep.save(dialog);
     }
 
     @PostMapping
@@ -91,6 +98,6 @@ public class ChatterWebController {
             log.debug("message got id = {}", message.getId());
 
         }
-        return "redirect:/chatter?p="+username;
+        return "redirect:/chatter?p=" + username;
     }
 }
