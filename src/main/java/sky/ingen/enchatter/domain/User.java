@@ -23,7 +23,8 @@ import java.util.Set;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Entity
-@Table(name = "usr", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
+@Table(name = "usr", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx"),
+        @UniqueConstraint(columnNames = "username", name = "users_unique_username_idx")})
 public class User implements UserDetails {
 
     @Id
@@ -39,7 +40,6 @@ public class User implements UserDetails {
     private String password;
 
     @Email(message = "invalid email")
-    @NotBlank(message = "Email cannot be empty")
     private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
