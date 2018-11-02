@@ -31,36 +31,34 @@
                 </nav>
             </nav>
         </div>
-        <div class="col-sm-8 h-100">
-            <div th:if="${messages.size()==0}">
-                <a class="text-secondary font-size-20">You have not written a message yet.</a>
-            </div>
-            <div class="jumbotron h-90" id="messagesBlock">
+        <div class="col-sm-8 h-100" id="messagesBlock">
+            <div class="jumbotron h-90" id="conversation">
+                <div id="temporaryIdForMessages">
+                    <div th:each="message, rowStat: ${messages}">
+                        <div class="card-group d-flex flex-column"
+                             th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?'align-items-end':'align-items-start'">
+                            <div class="card my-1 d-inline-flex mw-100 border-secondary shadow">
+                                <div class="card-header d-inline-flex align-items-baseline p-1">
+                                    <a class="text-primary font-size-20"
+                                       th:text="${message.getAuthor().getUsername()}"></a>
+                                    <a class="text-secondary ml-3 font-size-12"
+                                       th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
+                                </div>
+                                <div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">
+                                    <a th:text="${message.getText()}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <!--TODO uncomment card block and delete table block (dont forget to add id)-->
-                <!--<div th:each="message, rowStat: ${messages}">-->
-                    <!--<div class="card-group d-flex flex-column"-->
-                         <!--th:classappend="${message.getAuthor().equals(#authentication.getPrincipal())}?-->
-                         <!--'align-items-end':'align-items-start'">-->
-                        <!--<div class="card my-1 d-inline-flex mw-100 border-secondary shadow">-->
-                            <!--<div class="card-header d-inline-flex align-items-baseline p-1">-->
-                                <!--<a class="text-primary font-size-20" th:text="${message.getAuthor().getUsername()}"></a>-->
-                                <!--<a class="text-secondary ml-3 font-size-12"-->
-                                   <!--th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>-->
-                            <!--</div>-->
-                            <!--<div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">-->
-                                <!--<a th:text="${message.getText()}"></a>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <table id="conversation" class="table table-striped">
+                <!--<table id="conversation" class="table table-striped">
                     <thead>
                     <tr>
                         <th>Greetings to all</th>
                     </tr>
                     </thead>
-                    <tbody id="temporaryIdForMessages">
+                    <tbody>
                     <tr th:each="message, rowStat: ${messages}">
                         <td th:text="${message.id}"> </td>
                         <td th:text="${message.author.username}"> </td>
@@ -68,7 +66,7 @@
                         <td th:text="${message.creationTime}"> </td>
                     </tr>
                     </tbody>
-                </table>
+                </table>-->
             </div>
             <div class="h-10">
                 <form id="formInputMessageText">
@@ -87,6 +85,7 @@
 <div th:replace="fragments/footer :: footer"></div>
 <script th:inline="javascript">
     let dialogId = [[${dialogId}]];
+    let auth = [[${interlocutor}]];
     if (dialogId !== null) {
         connect()
     }
