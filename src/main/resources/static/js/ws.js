@@ -26,14 +26,20 @@ const messagesBlock = $("#messagesBlock");
 
 
 function showGreeting(message) {
-    // TODO -  all changes do here, u must append cards to card-group instead of adding rows to the table (as it now)
-
-    $("#temporaryIdForMessages").append("<tr>" +
-        "<td>" + message.id + "</td>" +
-        "<td>" + message.author.username + "</td>" +
-        "<td>" + message.text + "</td>" +
-        "<td>" + message.creationTime + "</td>" +
-        "</tr>")
+        $("#messages").append
+        (
+            '<div class="card-group d-flex flex-column '+ (message.author.username === interlocutor ? 'align-items-start' : 'align-items-end') + '">' +
+                '<div class="card my-1 d-inline-flex mw-100 border-secondary shadow" >' +
+                    '<div class="card-header d-inline-flex align-items-baseline p-1">' +
+                        '<a class="text-primary font-size-20">' + message.author.username + '</a>' +
+                        '<a class="text-secondary ml-3 font-size-12">' + message.creationTime+'</a>' +
+                    '</div>' +
+                    '<div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">' +
+                        '<a>' + message.text + '</a>' +
+                    '</div>' +
+                '</div>' +
+            '</div>'
+        );
 
     messagesBlock.scrollTop(messagesBlock[0].scrollHeight);
 }

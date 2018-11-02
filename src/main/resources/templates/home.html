@@ -19,7 +19,6 @@
                 <tr>
                     <th>Id</th>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>Roles</th>
                     <th></th>
                     <th></th>
@@ -28,9 +27,8 @@
                 <tbody>
                 <tr th:each="user, rowStat: ${users}"
                     th:style="${rowStat.odd} ? 'color: gray' : 'color: black;'">
-                    <td th:text="${user.id}">1</td>
+                    <td th:text="${user.id}"></td>
                     <td th:text="${user.username}"></td>
-                    <td th:text="${user.password}"></td>
                     <td th:text="${user.roles}"></td>
                     <td>
                         <div sec:authorize="isAuthenticated()">
