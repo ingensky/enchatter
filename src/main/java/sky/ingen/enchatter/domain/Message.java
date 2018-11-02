@@ -33,7 +33,7 @@ public class Message {
     private String text;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd MMM HH:mm:ss")
     @JsonView(View.Body.class)
     private LocalDateTime creationTime;
 
