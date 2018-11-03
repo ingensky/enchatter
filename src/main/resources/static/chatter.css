@@ -32,3 +32,11 @@ body, html{
 .card-body{
     word-break: break-all;
 }
+
+.mh-90{
+    max-height: 90%;
+}
+
+.mh-10{
+    max-height: 10%;
+}
