@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface DialogRep extends JpaRepository<Dialog, Long> {
 
-    @Query("SELECT d from Dialog d where d.interlocutorOne = ?1 OR d.interlocutorTwo = ?1 ORDER BY d.lastUpdate")
+    @Query("SELECT d from Dialog d where d.interlocutorOne = ?1 OR d.interlocutorTwo = ?1 ORDER BY d.lastUpdate DESC")
     List<Dialog> getAllForPrincipal(User authUser);
 
     @Query("SELECT d from Dialog d where (d.interlocutorOne = ?1 AND d.interlocutorTwo = ?2) OR " +
