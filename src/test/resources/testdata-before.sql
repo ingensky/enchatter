@@ -1,3 +1,8 @@
+DELETE FROM message;
+DELETE FROM dialog;
+DELETE FROM user_role;
+DELETE FROM usr;
+
 INSERT INTO usr (ID, username, PASSWORD) VALUES
    (1000, 'user', '1'),
    (1001, 'admin', '2'),
@@ -15,10 +20,10 @@ INSERT INTO user_role (roles, user_id) VALUES
   ('USER', 1004),
   ('USER', 1000);
 
-INSERT INTO dialog (id, interlocutor_one_id, interlocutor_two_id, last_update) VALUES
-(2000, 1000, 1001, '2018-10-23 20:06:00'),
-(2001, 1002, 1003, '2018-10-23 20:07:00'),
-(2002, 1000, 1004, '2018-10-23 20:09:00');
+INSERT INTO dialog (id, interlocutor_one_id, interlocutor_two_id) VALUES
+(2000, 1000, 1001),
+(2001, 1002, 1003),
+(2002, 1000, 1004);
 
 INSERT INTO message (id, user_id, dialog_id, text, creation_time) VALUES
 (3000, 1000, 2000, 'hello', '2018-10-23 20:00:00'),
