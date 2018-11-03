@@ -29,7 +29,7 @@ function showGreeting(message) {
         $("#messages").append
         (
             '<div class="card-group d-flex flex-column '+ (message.author.username === interlocutor ? 'align-items-start' : 'align-items-end') + '">' +
-                '<div class="card my-1 d-inline-flex mw-100 border-secondary shadow" >' +
+                '<div class="card my-1 d-inline-flex mw-100 border shadow" >' +
                     '<div class="card-header d-inline-flex align-items-baseline p-1">' +
                         '<a class="text-primary font-size-20">' + message.author.username + '</a>' +
                         '<a class="text-secondary ml-3 font-size-12">' + message.creationTime+'</a>' +

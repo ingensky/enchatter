@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,13 +98,15 @@ public class ChatterWebController {
     @MessageMapping("/dialog/{id}")
     @SendTo("/topic/activity/{id}")
     @JsonView(View.Body.class)
+    @Transactional
     public Message sendMessageWS(
             Principal author,
             @DestinationVariable("id") Long dialogId,
             @Payload Message message
     ) {
-        Dialog one = dialogRep.getById(dialogId);
-        message.setDialog(one);
+        Dialog dialog = dialogRep.getById(dialogId);
+        dialog.setLastUpdate(LocalDateTime.now());
+        message.setDialog(dialog);
 //        https://stackoverflow.com/a/46248706/7667017
         User principal = (User) ((Authentication) author).getPrincipal();
         message.setAuthor(principal);

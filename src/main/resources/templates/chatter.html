@@ -14,17 +14,18 @@
 
     <div class="row h-100">
         <div class="col-sm-3 h-100">
-            <nav class="navbar navbar-light align-items-stretch bg-light flex-column m-0 p-0 mh-100">
+            <nav class="navbar navbar-light align-items-stretch bg-light flex-column m-0 p-0 mh-100 rounded">
+                <button class="btn btn-dark mb-3">Dialogs</button>
                 <nav class="jumbotron mh-90 m-0 p-0">
                     <nav class="nav nav-pills flex-column mh-100"
                          th:each="dialog, rowStat: ${dialogs}"
                          th:switch="${dialog.interlocutorOne.equals(#authentication.getPrincipal())}">
-                        <a th:case="true" class="nav-link"
-                           th:classappend="${dialogId == dialog.getId()}?'active'"
+                        <a th:case="true" class="nav-link mx-2 my-1"
+                           th:classappend="${dialogId == dialog.getId()}?'active':'border'"
                            th:utext="${dialog.interlocutorTwo.username}"
                            th:href="@{/chatter(p=${dialog.interlocutorTwo.username})}"></a>
-                        <a th:case="false" class="nav-link"
-                           th:classappend="${dialogId == dialog.getId()}?'active'"
+                        <a th:case="false" class="nav-link mx-2 my-1"
+                           th:classappend="${dialogId == dialog.getId()}?'active':'border'"
                            th:utext="${dialog.interlocutorOne.username}"
                            th:href="@{/chatter(p=${dialog.interlocutorOne.username})}"></a>
                     </nav>
@@ -37,7 +38,7 @@
                     <div th:each="message, rowStat: ${messages}">
                         <div class="card-group d-flex flex-column"
                              th:classappend="${message.author.equals(#authentication.getPrincipal())}?'align-items-end':'align-items-start'">
-                            <div class="card my-1 d-inline-flex mw-100 border-secondary shadow">
+                            <div class="card my-1 d-inline-flex mw-100 border shadow">
                                 <div class="card-header d-inline-flex align-items-baseline p-1">
                                     <a class="text-primary font-size-20"
                                        th:text="${message.author.username}"></a>
