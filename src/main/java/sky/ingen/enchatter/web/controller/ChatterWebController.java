@@ -21,14 +21,11 @@ import sky.ingen.enchatter.domain.User;
 import sky.ingen.enchatter.domain.util.View;
 import sky.ingen.enchatter.rep.DialogRep;
 import sky.ingen.enchatter.service.MessageService;
-import sky.ingen.enchatter.service.UserService;
-import sky.ingen.enchatter.util.exception.NotFoundException;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/chatter")
@@ -37,14 +34,11 @@ public class ChatterWebController {
 
     private final MessageService messageService;
 
-    private final UserService userService;
-
     private final DialogRep dialogRep;
 
     @Autowired
-    public ChatterWebController(MessageService msgService, UserService userService, DialogRep dialogRep) {
-        this.messageService = msgService;
-        this.userService = userService;
+    public ChatterWebController(MessageService messageService,  DialogRep dialogRep) {
+        this.messageService = messageService;
         this.dialogRep = dialogRep;
     }
 
@@ -57,13 +51,7 @@ public class ChatterWebController {
     ) {
         List<Dialog> allForPrincipal = dialogRep.getAllForPrincipal(authUser);
         if (username != null) {
-            User interlocutor = Optional.ofNullable(userService.getByUsername(username))
-                    .orElseThrow(() ->
-                            new NotFoundException(String.format("User %s not found", username)));
-            Dialog conversation = getDialog(authUser, interlocutor, allForPrincipal);
-            if (!allForPrincipal.contains(conversation)) {
-                allForPrincipal.add(conversation);
-            }
+            Dialog conversation = messageService.getDialogForUser(username, authUser, allForPrincipal);
             model.addAttribute("messages", messageService.allDialogMessages(conversation));
             model.addAttribute("interlocutor", username);
             model.addAttribute("dialogId", conversation.getId());
@@ -78,22 +66,6 @@ public class ChatterWebController {
 
     }
 
-    private Dialog getDialog(User authUser, User interlocutor, List<Dialog> allForPrincipal) {
-        return allForPrincipal.stream().filter(dialog ->
-                (dialog.getInterlocutorOne().getId().equals(interlocutor.getId())) ||
-                        (dialog.getInterlocutorTwo().getId().equals(interlocutor.getId()))
-        ).findFirst()
-                .orElseGet(() -> createNewDialog(authUser, interlocutor));
-    }
-
-    private Dialog createNewDialog(User one, User two) {
-        Dialog dialog = Dialog.builder()
-                .interlocutorOne(one)
-                .interlocutorTwo(two)
-                .lastUpdate(LocalDateTime.now())
-                .build();
-        return dialogRep.save(dialog);
-    }
 
     @MessageMapping("/dialog/{id}")
     @SendTo("/topic/activity/{id}")
