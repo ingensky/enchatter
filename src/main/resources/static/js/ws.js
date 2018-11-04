@@ -8,7 +8,7 @@ function connect() {
         console.log('Connected' + frame)
         stompClient.subscribe('/topic/activity/' + dialogId, function (message) {
             // debugger;
-            showGreeting(JSON.parse(message.body))
+            showMessage(JSON.parse(message.body))
         })
     })
 }
@@ -25,7 +25,7 @@ function disconnect() {
 const messagesBlock = $("#messagesBlock");
 
 
-function showGreeting(message) {
+function showMessage(message) {
         $("#messages").append
         (
             '<div class="card-group d-flex flex-column '+ (message.author.username === interlocutor ? 'align-items-start' : 'align-items-end') + '">' +
