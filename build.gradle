@@ -50,4 +50,6 @@ dependencies {
 	compile("org.webjars:jquery:3.1.0")
 	compile("org.webjars.bower:noty:3.1.4")
 
+	compile 'org.flywaydb:flyway-core:5.2.1'
+
 }
