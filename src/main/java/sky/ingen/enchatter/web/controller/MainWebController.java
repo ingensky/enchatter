@@ -18,11 +18,11 @@ import java.util.Collections;
 public class MainWebController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
     @GetMapping
     public String getStartPage(Model model) {
-        model.addAttribute("users", service.getAll());
+        model.addAttribute("users", userService.getAll());
         model.addAttribute("user", new User());
         return "home";
     }
@@ -32,7 +32,7 @@ public class MainWebController {
             @ModelAttribute("user") User user
             ) {
         user.setRoles(Collections.singleton(Role.USER));
-        service.create(user);
+        userService.create(user);
         return "redirect:/login";
     }
 }

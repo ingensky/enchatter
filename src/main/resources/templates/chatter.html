@@ -39,10 +39,10 @@
                         <div class="card-group d-flex flex-column"
                              th:classappend="${message.author.equals(#authentication.getPrincipal())}?'align-items-end':'align-items-start'">
                             <div class="card my-1 d-inline-flex mw-100 border shadow">
-                                <div class="card-header d-inline-flex align-items-baseline p-1">
-                                    <a class="text-primary font-size-20"
+                                <div class="card-header d-inline-flex align-items-baseline p-0">
+                                    <a class="text-primary font-size-20 ml-2"
                                        th:text="${message.author.username}"></a>
-                                    <a class="text-secondary ml-3 font-size-12"
+                                    <a class="text-secondary mx-2 font-size-12"
                                        th:text="${#temporals.format(message.creationTime,'dd MMM HH:mm:ss')}"></a>
                                 </div>
                                 <div class="card-body d-inline-flex mw-100 mx-2 my-1 p-0">
@@ -59,7 +59,7 @@
                         <input type="text" autocomplete="off"
                                id="inputMessageText" class="form-control" autofocus/>
                         <div class="input-group-append">
-                            <button onclick="sendMessage(dialogId)" class="btn btn-primary">Send</button>
+                            <button onclick="sendMessage(dialogId)" class="btn btn-primary">Send <i class="fa fa-paper-plane"></i></button>
                         </div>
                     </div>
                 </form>
