@@ -65,7 +65,7 @@ function sendMessage(dialogId) {
 
     let textLengthError = messageInput.val().length < 2;
     let errorText = stompClient === null ? "You must be on dialog page" :
-        textLengthError ? "Your text should be longer then 2 letters minimum" : undefined
+        textLengthError ? "Your should enter some text." : undefined
     if (errorText) {
         noty = new Noty({
             text: errorText,
