@@ -1,6 +1,5 @@
 package sky.ingen.enchatter.domain;
 
-
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
