@@ -28,7 +28,7 @@ public class Message {
     private Long id;
 
     @NotBlank(message = "Please enter some message")
-    @Size(min = 2, max = 2048)
+    @Size(min = 1, max = 2048)
     @JsonView(View.Main.class)
     private String text;
 
