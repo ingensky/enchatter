@@ -33,8 +33,13 @@
                     <td th:text="${user.username}"></td>
                     <td th:text="${user.roles}"></td>
                     <td>
-                        <div sec:authorize="isAuthenticated()">
-                            <a th:href="@{/chatter(p=${user.username})}" class="fa fa-comment"></a>
+                        <div sec:authorize="isAuthenticated()"
+                             th:switch="${interlocutorsWithDialogId.containsKey(user.username)}">
+                            <button type="button" class="btn btn-primary fa fa-comment" data-toggle="modal"
+                                    data-target="#exampleModal" th:case="false"></button>
+                            <a class="fa fa-comment"
+                               th:case="true"
+                               th:href="@{/chatter(p=${user.username})}"></a>
                         </div>
                     </td>
                 </tr>
@@ -73,6 +78,40 @@
                     </form>
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialogl"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="greetingsForm" th:action="@{/new_dialog/{username}(username='q')}" th:object="${greetings}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New dialog</h5>
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div role="group" class="form-group">
+                            <label class="col-form-label">Your greetings</label>
+                            <div class="d-flex align-items-start">
+                                <input type="text" class="form-control" id="greetings" contenteditable="true" th:field="*{text}">
+                                <button type="button" class="close mx-1" id="clearButton"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Start dialog</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

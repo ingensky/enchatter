@@ -3,6 +3,7 @@ package sky.ingen.enchatter.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 import sky.ingen.enchatter.domain.Dialog;
 import sky.ingen.enchatter.domain.Message;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
 public class MessageService {
 
     private final MessageRep messageRep;
@@ -83,15 +85,23 @@ public class MessageService {
                 (dialog.getInterlocutorOne().getId().equals(interlocutor.getId())) ||
                         (dialog.getInterlocutorTwo().getId().equals(interlocutor.getId()))
         ).findFirst()
-                .orElseGet(() -> createNewDialog(authUser, interlocutor));
+                .orElseGet(() -> createNewDialog(authUser, interlocutor, null));
     }
 
-    private Dialog createNewDialog(User one, User two) {
+    @Transactional
+    public Dialog createNewDialog(User authUser, User interlocutor, Message greetings) {
         Dialog dialog = Dialog.builder()
-                .interlocutorOne(one)
-                .interlocutorTwo(two)
+                .interlocutorOne(authUser)
+                .interlocutorTwo(interlocutor)
                 .lastUpdate(LocalDateTime.now())
                 .build();
+        if (greetings != null && greetings.getText()!=null && !greetings.getText().isEmpty()) {
+            greetings.setAuthor(authUser);
+            greetings.setCreationTime(LocalDateTime.now());
+            greetings.setDialog(dialog);
+            create(greetings);
+            dialog.getMessages().add(greetings);
+        }
         return dialogRep.save(dialog);
     }
 
