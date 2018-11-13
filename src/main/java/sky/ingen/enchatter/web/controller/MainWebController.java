@@ -43,20 +43,20 @@ public class MainWebController {
                             dialog -> dialog.getId()));
         }
         model.addAttribute("interlocutorsWithDialogId", interlocutorsWithDialogId);
-        Message greetings = new Message();
-        greetings.setText("Hi");
-        model.addAttribute("greetings", greetings);
+        Message greeting = new Message();
+        greeting.setText("Hi");
+        model.addAttribute("greeting", greeting);
         return "home";
     }
 
-    @PostMapping("/new_dialog/{username}")
+    @PostMapping("/new_dialog/{user_id}")
     public String newDialogSubmit(
-            @PathVariable("username") String username,
+            @PathVariable("user_id") String interlocutorId,
             @AuthenticationPrincipal User authUser,
-            @ModelAttribute("greetings") Message greetings
+            @ModelAttribute("greeting") Message greeting
     ) {
-        User interlocutor = userService.getByUsername(username);
-        Dialog conversation = messageService.createNewDialog(authUser, interlocutor, greetings);
+        User interlocutor = userService.get(Long.parseLong(interlocutorId));
+        messageService.createNewDialog(authUser, interlocutor, greeting);
 
         return "redirect:/chatter?p=" + interlocutor.getUsername();
     }

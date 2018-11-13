@@ -14,6 +14,7 @@ import sky.ingen.enchatter.rep.UserRep;
 import sky.ingen.enchatter.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,18 +90,18 @@ public class MessageService {
     }
 
     @Transactional
-    public Dialog createNewDialog(User authUser, User interlocutor, Message greetings) {
+    public Dialog createNewDialog(User authUser, User interlocutor, Message greeting) {
         Dialog dialog = Dialog.builder()
                 .interlocutorOne(authUser)
                 .interlocutorTwo(interlocutor)
                 .lastUpdate(LocalDateTime.now())
                 .build();
-        if (greetings != null && greetings.getText()!=null && !greetings.getText().isEmpty()) {
-            greetings.setAuthor(authUser);
-            greetings.setCreationTime(LocalDateTime.now());
-            greetings.setDialog(dialog);
-            create(greetings);
-            dialog.getMessages().add(greetings);
+        if (greeting != null && greeting.getText()!=null && !greeting.getText().isEmpty()) {
+            greeting.setAuthor(authUser);
+            greeting.setCreationTime(LocalDateTime.now());
+            greeting.setDialog(dialog);
+            create(greeting);
+            dialog.setMessages(Collections.singleton(greeting));
         }
         return dialogRep.save(dialog);
     }
