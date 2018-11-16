@@ -21,24 +21,26 @@ import java.util.stream.Collectors;
 @RequestMapping("/")
 public class MainWebController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final DialogRep dialogRep;
 
     @Autowired
-    private MessageService messageService;
-
-    @Autowired
-    private DialogRep dialogRep;
+    public MainWebController(UserService userService, DialogRep dialogRep) {
+        this.userService = userService;
+        this.dialogRep = dialogRep;
+    }
 
     @GetMapping
     public String getStartPage(Model model, @AuthenticationPrincipal User authUser) {
+        // todo - delete unused stuff from this method
         model.addAttribute("users", userService.getAll());
         model.addAttribute("user", new User());
         Map<String, Long> interlocutorsWithDialogId = null;
         if (authUser != null) {
             interlocutorsWithDialogId = dialogRep.getAllForPrincipal(authUser).stream().collect(
                     Collectors.toMap(
-                            dialog -> authUser.equals(dialog.getInterlocutorOne()) ? dialog.getInterlocutorTwo().getUsername() :
+                            dialog -> authUser.equals(dialog.getInterlocutorOne()) ?
+                                    dialog.getInterlocutorTwo().getUsername() :
                                     dialog.getInterlocutorOne().getUsername(),
                             dialog -> dialog.getId()));
         }
@@ -49,17 +51,8 @@ public class MainWebController {
         return "home";
     }
 
-    @PostMapping("/new_dialog/{user_id}")
-    public String newDialogSubmit(
-            @PathVariable("user_id") String interlocutorId,
-            @AuthenticationPrincipal User authUser,
-            @ModelAttribute("greeting") Message greeting
-    ) {
-        User interlocutor = userService.get(Long.parseLong(interlocutorId));
-        messageService.createNewDialog(authUser, interlocutor, greeting);
 
-        return "redirect:/chatter?p=" + interlocutor.getUsername();
-    }
+
 
     @PostMapping
     public String registerSubmit(
